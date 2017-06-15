@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Calendar</title>
+    <style>
+        .prev-month, .next-month { color: #CCC }
+        .today { font-weight: bold; background: #DDD; }
+        .title { background: #AAAAFF; margin: 10px 0; padding:5px }
+        table { border: 1px solid #CCC;}
+        td { text-align: center; }
+        #calendarCode { width: 100%; }
+    </style>
+    <script>
+        function calendar([day, month, year])
+        {   html =`<table>\n`;
+            html += ` <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>\n`;
+            html +=`  <tr>`;
+                let currentDate=new Date(year,month-1,1)
+            let lastDay=new Date(year,month-1,0).getDate();
+            let previusDate=new Date(currentDate.getFullYear(), currentDate.getMonth()-1,0);
+            let previousDays= currentDate.getDay();
+            previusDate.setDate(previusDate.getDate()-previousDays);
+              let days= previusDate.getDate();
+            for(let col=0; col<previousDays ;col++){
+
+                html += `<td class="prev-month">`+ days++ +`</td>`;
+            }
+            days=1;
+            for(let col=previousDays; col<lastDay+previousDays-1;col++){
+
+                if(col%7==0){
+                    html +='</tr>\n <tr>';
+                }
+                if(days==day){
+                    html += `<td class="today">`+ days +`</td>`;
+                }
+                else {
+                    html += `<td>`+ days +`</td>`;
+                }
+                days++;
+
+            }
+
+
+            let nextdate=new Date(currentDate.getFullYear(), currentDate.getMonth()+1,1);
+
+            let nextDay=7-nextdate.getDay();
+            days=1;
+            for(let col=0; col<nextDay ;col++){
+
+                html += `<td class=="next-month">`+ days++ +`</td>`;
+            }
+            html+=`\n</table>`;
+            return html;
+        }
+    </script>
+</head>
+
+<body>
+Day: <input id="day" type="number" value="4" />
+Month: <input id="month" type="number" value="9" />
+Year: <input id="year" type="number" value="2016" />
+<input type="button" value="Show"
+       onclick="let calendarHTML =
+            calendar([document.getElementById('day').value,
+                document.getElementById('month').value,
+                document.getElementById('year').value]);
+            document.getElementById('calendar').innerHTML = calendarHTML;
+            document.getElementById('calendarCode').innerText = calendarHTML" />
+<div class="title">Calendar:</div>
+<div id="calendar">Calendar will be shown here</div>
+<div class="title">HTML:</div>
+<textarea rows="12" id="calendarCode"></textarea>
+</body>
+
+</html>
